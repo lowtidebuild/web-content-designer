@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Renewable Energy Outlook 2026 — Executive Summary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fonts-archive/Paperlogy/subsets/Paperlogy-dynamic-subset.css" type="text/css"/>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #2E7D32;
+            --primary-light: #4CAF50;
+            --bg: #fbfaf5;
+            --text: #3d403a;
+            --accent: #e8f5e9;
+            --card-shadow: 0 2px 8px rgba(46, 125, 50, 0.08);
+        }
+        html, body {
+            height: 100vh;
+            overflow: hidden;
+            font-family: "Paperlogy", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+        }
+        @media (max-width: 768px) {
+            html, body { overflow: auto; height: auto; }
+            .summary-grid { height: auto !important; }
+            .kpi-row { grid-template-columns: repeat(2, 1fr) !important; }
+            .content-area { grid-template-columns: 1fr !important; }
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-rows: auto auto auto 1fr auto;
+            height: 100vh;
+            padding: 1.5rem 2rem;
+            gap: 0.9rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.6rem;
+        }
+        .header-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+        .header-meta {
+            font-size: 0.7rem;
+            color: #78796f;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        /* Executive Summary */
+        .exec-summary {
+            background: var(--accent);
+            border-radius: 0.75rem;
+            padding: 0.85rem 1.1rem;
+            font-size: 0.82rem;
+            line-height: 1.55;
+            border-left: 4px solid var(--primary);
+        }
+
+        /* KPI Row */
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+        }
+        .kpi-card {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 0.85rem;
+            text-align: center;
+            border-top: 3px solid var(--primary);
+            box-shadow: var(--card-shadow);
+            transition: transform 0.2s ease;
+        }
+        .kpi-card:hover { transform: translateY(-2px); }
+        .kpi-icon { font-size: 1.3rem; margin-bottom: 0.15rem; }
+        .kpi-number {
+            font-size: 1.45rem;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1.2;
+        }
+        .kpi-label {
+            font-size: 0.65rem;
+            color: #6b7280;
+            margin-top: 0.2rem;
+            line-height: 1.25;
+        }
+
+        /* Content Area */
+        .content-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.9rem;
+            min-height: 0;
+        }
+        .card {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.1rem;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .card-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.65rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .key-point {
+            font-size: 0.78rem;
+            line-height: 1.4;
+            padding: 0.45rem 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        .key-point:last-child { border-bottom: none; }
+        .key-point strong {
+            color: var(--primary);
+        }
+
+        /* Footer */
+        .footer-bar {
+            background: linear-gradient(135deg, var(--primary) 0%, #1B5E20 100%);
+            color: white;
+            padding: 0.7rem 1.25rem;
+            border-radius: 0.75rem;
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="summary-grid">
+
+        <!-- HEADER -->
+        <div class="header-section">
+            <div>
+                <h1 class="header-title">Global Renewable Energy Outlook 2026</h1>
+                <p style="font-size: 0.72rem; color: #6b7280; margin-top: 0.15rem;">Transition Milestones, Investment Flows & Grid Integration Challenges</p>
+            </div>
+            <div class="header-meta">
+                <div>March 2026</div>
+                <div>Source: IEA World Energy Outlook, IRENA, BloombergNEF</div>
+            </div>
+        </div>
+
+        <!-- EXECUTIVE SUMMARY -->
+        <div class="exec-summary">
+            Global renewable energy capacity surpassed 4,200 GW in 2025, driven by record solar installations in China and accelerating offshore wind deployment across Europe. Despite this momentum, grid integration bottlenecks and permitting delays remain the primary barriers to meeting the 2030 tripling target set at COP28. Investment flows have shifted decisively toward clean energy, with $1.8 trillion deployed in 2025 — outpacing fossil fuel spending 2:1 for the first time.
+        </div>
+
+        <!-- KPI ROW -->
+        <div class="kpi-row">
+            <div class="kpi-card">
+                <div class="kpi-icon">⚡</div>
+                <div class="kpi-number">4,200 GW</div>
+                <div class="kpi-label">Global renewable capacity (2025)</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon">💰</div>
+                <div class="kpi-number">$1.8T</div>
+                <div class="kpi-label">Clean energy investment (2025)</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon">☀️</div>
+                <div class="kpi-number">78%</div>
+                <div class="kpi-label">Solar share of new capacity added</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon">🔋</div>
+                <div class="kpi-number">2:1</div>
+                <div class="kpi-label">Clean vs. fossil fuel spending ratio</div>
+            </div>
+        </div>
+
+        <!-- CONTENT AREA -->
+        <div class="content-area">
+            <!-- Key Points -->
+            <div class="card">
+                <div class="card-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    Key Findings
+                </div>
+                <div class="key-point">
+                    <strong>Solar dominance:</strong> Solar PV accounted for 78% of all new capacity additions in 2025, with module costs falling below $0.10/W.
+                </div>
+                <div class="key-point">
+                    <strong>Grid bottleneck:</strong> Over 1,500 GW of renewable projects are stuck in interconnection queues globally, averaging 5+ year wait times.
+                </div>
+                <div class="key-point">
+                    <strong>Storage inflection:</strong> Battery storage deployments tripled year-over-year, crossing 200 GWh of annual installations for the first time.
+                </div>
+                <div class="key-point">
+                    <strong>Policy divergence:</strong> While EU and China accelerate, emerging economies face financing gaps of $400B/year to meet clean energy targets.
+                </div>
+            </div>
+
+            <!-- Chart -->
+            <div class="card">
+                <div class="card-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                    Renewable Capacity by Region (GW, 2025)
+                </div>
+                <div style="position: relative; flex: 1; min-height: 0;">
+                    <canvas id="summaryChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- STRATEGIC RECOMMENDATION -->
+        <div class="footer-bar">
+            <span>💡</span>
+            Governments must prioritize grid modernization and permitting reform — without solving interconnection delays, the COP28 tripling target will be structurally unreachable regardless of generation capacity growth.
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('summaryChart');
+        if (ctx) {
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['China', 'EU', 'USA', 'India', 'Rest of World'],
+                    datasets: [{
+                        label: 'Capacity (GW)',
+                        data: [1680, 780, 520, 340, 880],
+                        backgroundColor: [
+                            'rgba(46, 125, 50, 0.85)',
+                            'rgba(76, 175, 80, 0.75)',
+                            'rgba(129, 199, 132, 0.75)',
+                            'rgba(165, 214, 167, 0.75)',
+                            'rgba(200, 230, 201, 0.75)'
+                        ],
+                        borderColor: [
+                            '#2E7D32', '#43A047', '#66BB6A', '#81C784', '#A5D6A7'
+                        ],
+                        borderWidth: 1,
+                        borderRadius: 6,
+                        barPercentage: 0.7
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#1B5E20',
+                            titleFont: { family: 'Paperlogy', size: 12 },
+                            bodyFont: { family: 'Paperlogy', size: 11 },
+                            callbacks: {
+                                label: function(ctx) { return ctx.parsed.x + ' GW'; }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(0,0,0,0.04)' },
+                            ticks: {
+                                font: { family: 'Paperlogy', size: 10 },
+                                color: '#78796f',
+                                callback: function(val) { return val + ' GW'; }
+                            }
+                        },
+                        y: {
+                            grid: { display: false },
+                            ticks: {
+                                font: { family: 'Paperlogy', size: 11, weight: '600' },
+                                color: '#3d403a'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    });
+    </script>
+</body>
+</html>
