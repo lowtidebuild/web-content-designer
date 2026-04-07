@@ -96,13 +96,13 @@ The skill activates on phrases like:
 
 ## Examples
 
-The `examples/` folder contains three real output samples — one for each layout:
+The project root currently includes these sample HTML outputs:
 
-| File | Layout | Theme | Description |
-|:--|:--|:--|:--|
-| `dashboard-example.html` | Interactive Dashboard | Professional Blue | U.S. Supreme Court IEEPA tariff ruling analysis |
-| `infographic-example.html` | Visual Infographic | Urgent Alert | Iran-US conflict deep dive with timelines and scenario analysis |
-| `summary-example.html` | One-Page Summary | Earthy Green | Global renewable energy outlook 2026 |
+| File | Description |
+|:--|:--|
+| `dashboard-example.html` | Renewable energy executive summary sample |
+| `infographic-example.html` | Supreme Court tariff ruling dashboard sample |
+| `dashboard-sample-ai-native-education.html` | Drew Bent / Anthropic AI-native education dashboard sample |
 
 Open any of these `.html` files in your browser to see the expected output quality.
 
@@ -113,15 +113,12 @@ Open any of these `.html` files in your browser to see the expected output quali
 ```
 web-content-designer/
 ├── SKILL.md                              # Main entry point (read first)
-├── references/
-│   ├── design-themes.md                  # 10-theme color matrix + application guide
-│   ├── dashboard-structure.md            # Layout 1 blueprint: sidebar, scroll-spy, KPIs
-│   ├── infographic-structure.md          # Layout 2 blueprint: long-scroll narrative
-│   └── summary-structure.md             # Layout 3 blueprint: single-viewport, no-scroll
-└── examples/
-    ├── dashboard-example.html            # Real output sample (Layout 1)
-    ├── infographic-example.html          # Real output sample (Layout 2)
-    └── summary-example.html             # Real output sample (Layout 3)
+├── design-themes.md                      # 10-theme color matrix + application guide
+├── dashboard-structure.md                # Layout 1 blueprint: sidebar, scroll-spy, KPIs
+├── infographic-structure.md              # Layout 2 blueprint: long-scroll narrative
+├── dashboard-example.html                # Existing HTML sample
+├── infographic-example.html              # Existing HTML sample
+└── dashboard-sample-ai-native-education.html  # Drew Bent / Anthropic dashboard sample
 ```
 
 **Progressive disclosure**: Claude reads only `SKILL.md` on trigger (~190 lines), then loads the relevant layout reference + example on demand. This keeps token usage efficient while maintaining high output quality.
