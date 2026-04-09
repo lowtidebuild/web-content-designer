@@ -1,289 +1,402 @@
-# One-Page Executive Summary Structure Reference (Layout 3)
+# Design Themes — Consulting Palette Reference
 
-The One-Page Summary is a **compact, single-viewport overview** designed to fit on 
-one screen without scrolling. Think of it as a strategic consultant's briefing slide — 
-dense with information but visually clean.
+All palettes in this skill follow a single design philosophy: **McKinsey / BCG / Bain
+pitch deck discipline.** Restrained, typographic, hairline-bordered, monochromatic charts.
+No alarm reds, no startup gradients, no emoji icons, no decorative pastels.
 
-## Critical Constraint
+## Universal Rules (apply to all palettes)
 
-**NO SCROLLBARS.** The entire report must fit within a single viewport (approximately 
-100vh). This means:
-- Every text element must be aggressively condensed
-- No component may overflow its container
-- No internal scrollbars on any element
-- Content that doesn't fit must be cut — not squeezed
+These rules are non-negotiable regardless of which palette you select:
 
-This constraint is the defining characteristic of Layout 3. If in doubt, **remove 
-content rather than let it overflow.**
+1. **Never use raw Tailwind color classes** (e.g., `bg-blue-500`, `text-red-600`). Always
+   reference the palette through CSS variables: `style="color:var(--primary)"`.
+2. **Border-radius ≤ 0.125rem** — Cards, buttons, and containers use `rounded-sm` at most.
+   Never `rounded-xl` or `rounded-full` (except circular section number badges, which are
+   max 24px).
+3. **Shadow ≤ `0 1px 2px rgba(0,0,0,0.04)`** — Prefer hairline borders (`1px solid var(--border)`)
+   over shadows. Never `shadow-lg` or heavier.
+4. **No emoji as functional icons** — KPI icons, section markers, and nav items use inline
+   SVG line icons (`stroke-width="2"` typical). Emoji is allowed only inside quoted source
+   text if it was literally there in the original.
+5. **Charts are restrained** — Single-series charts use `--primary` or its gradient
+   tints only. Two-series comparison charts may use `--primary` + `--accent` (the
+   McKinsey pairing). 3+ series charts use the 5-step monochromatic gradient defined
+   below. Any category that must signal "bad / warning / downside" uses muted oxblood
+   `#6b1220`, never alarm red. Never introduce bright blues, saturated reds, or
+   off-palette hues into chart fills.
+6. **Eyebrow labels before every heading** — Every section, every card, every KPI starts
+   with a small uppercase tracking-widest text label. This is the signature consulting-deck
+   visual rhythm.
+7. **Whitespace over decoration** — If a design feels empty, add whitespace, not color.
+8. **Font: Paperlogy** for headings and body. Heavy weights (800) for headlines, 600-700
+   for labels, 400 for prose.
 
-## Page Architecture
+## How to Choose a Palette
 
-```
-┌───────────────────────────────────────────────────────┐
-│  HEADER: Title + Subtitle + Date                      │
-├───────────────────────────────────────────────────────┤
-│  EXECUTIVE SUMMARY (2-3 lines max)                    │
-├───────────┬───────────┬───────────┬───────────────────┤
-│  KPI 1    │  KPI 2    │  KPI 3    │  KPI 4            │
-├───────────┴───────────┴───────────┴───────────────────┤
-│                       │                               │
-│  KEY POINTS           │  DATA VISUALIZATION           │
-│  (4 bullet items)     │  (bar chart or doughnut)      │
-│                       │                               │
-├───────────────────────┴───────────────────────────────┤
-│  STRATEGIC RECOMMENDATION (1 sentence)                │
-└───────────────────────────────────────────────────────┘
-```
+| If the source is about... | Use palette |
+|---|---|
+| Corporate strategy, finance, markets, general business, policy | **Consulting Navy** (default) |
+| Technology, software, AI, engineering, data platforms | **Boston Charcoal** |
+| Crisis, risk, conflict, regulatory action, litigation, loss | **Bain Crimson** |
+| Environment, sustainability, ESG, healthcare, public sector | **Deloitte Forest** |
+| Journalism, media analysis, social commentary, editorial long-form | **Editorial Slate** |
 
-## Content Preparation (Before Coding)
+**Default to Consulting Navy** if the content is ambiguous or cross-domain. Never switch
+palettes mid-document.
 
-You must restructure the source content into these exact slots. This is a **strategic 
-summarization** exercise — not copy-paste.
+---
 
-### Slot 1: Main Title
-The core topic in the fewest possible words. Maximum ~8 words.
+## Palette 1 — Consulting Navy (DEFAULT)
 
-### Slot 2: Executive Summary
-The entire source condensed into 2-3 short sentences. This should answer: 
-"What is this about and why does it matter?"
-
-### Slot 3: KPIs (×4)
-Find the 4 most impactful numbers from the source. Each KPI has:
-- An emoji icon (1 character)
-- A number + unit (e.g., "$29.6B", "6:3", "145%")
-- A label of maximum ~8 words
-
-**Strict rule**: The label must NOT exceed 2 short lines when rendered. 
-If it's too long, rewrite it shorter.
-
-### Slot 4: Data Visualization
-Find 2-4 comparable data points and create a simple bar chart or doughnut chart. 
-If no directly chartable data exists, create a representative chart from the 
-source's main categories or comparisons.
-
-### Slot 5: Key Points (×4)
-Extract the 4 most important arguments or findings. Format each as:
-```
-<strong>Keyword:</strong> One-sentence explanation.
-```
-
-**Bad example** (too long):
-> Physical album sales have been declining, making it strategically crucial 
-> to diversify revenue streams through concerts, streaming, merchandise, and 
-> other channels.
-
-**Good example** (concise):
-> <strong>Revenue diversification:</strong> Album sales declining; concerts, 
-> streaming, and merch increasingly critical.
-
-### Slot 6: Strategic Recommendation
-One powerful, actionable sentence summarizing the source's ultimate conclusion 
-or implication.
-
-## HTML Template
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Executive Summary</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fonts-archive/Paperlogy/subsets/Paperlogy-dynamic-subset.css" type="text/css"/>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body {
-            height: 100vh;
-            overflow: hidden; /* CRITICAL: prevents page scroll */
-            font-family: "Paperlogy", -apple-system, BlinkMacSystemFont, "Segoe UI", 
-                         Roboto, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-        }
-        :root {
-            --primary: #0052cc;
-            --bg: #f0f2f5;
-            --text: #172b4d;
-            --accent: #e6f0ff;
-        }
-        .summary-grid {
-            display: grid;
-            grid-template-rows: auto auto auto 1fr auto;
-            height: 100vh;
-            padding: 1.5rem;
-            gap: 1rem;
-        }
-        .kpi-row {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 0.75rem;
-        }
-        .kpi-card {
-            background: white;
-            border-radius: 0.75rem;
-            padding: 1rem;
-            text-align: center;
-            border-top: 3px solid var(--primary);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-        }
-        .kpi-number {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--primary);
-        }
-        .kpi-label {
-            font-size: 0.7rem;
-            color: #6b7280;
-            margin-top: 0.25rem;
-            line-height: 1.3;
-        }
-        .content-area {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            min-height: 0; /* prevents grid blowout */
-        }
-        .card {
-            background: white;
-            border-radius: 0.75rem;
-            padding: 1.25rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-            overflow: hidden; /* CRITICAL: prevents content overflow */
-        }
-        .key-point {
-            font-size: 0.8rem;
-            line-height: 1.4;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid #f3f4f6;
-        }
-        .key-point:last-child { border-bottom: none; }
-        .footer-bar {
-            background: var(--primary);
-            color: white;
-            padding: 0.75rem 1.25rem;
-            border-radius: 0.75rem;
-            font-size: 0.85rem;
-            font-weight: 600;
-            text-align: center;
-        }
-    </style>
-</head>
-<body>
-    <div class="summary-grid">
-        <!-- HEADER -->
-        <div>
-            <h1 style="font-size: 1.5rem; font-weight: 800; color: var(--primary);">
-                {{MAIN_TITLE}}
-            </h1>
-            <p style="font-size: 0.75rem; color: #6b7280; margin-top: 0.25rem;">
-                Date · Source Attribution
-            </p>
-        </div>
-
-        <!-- EXECUTIVE SUMMARY -->
-        <div class="card" style="padding: 1rem;">
-            <p style="font-size: 0.85rem; line-height: 1.5;">
-                {{EXECUTIVE_SUMMARY_2_TO_3_LINES}}
-            </p>
-        </div>
-
-        <!-- KPI ROW -->
-        <div class="kpi-row">
-            <div class="kpi-card">
-                <div>📊</div>
-                <div class="kpi-number">{{VALUE}}</div>
-                <div class="kpi-label">{{SHORT_LABEL}}</div>
-            </div>
-            <!-- repeat ×4 -->
-        </div>
-
-        <!-- CONTENT AREA: Key Points + Chart -->
-        <div class="content-area">
-            <div class="card">
-                <h3 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem; 
-                           color: var(--primary);">Key Points</h3>
-                <div class="key-point">
-                    <strong>Keyword:</strong> One-line summary.
-                </div>
-                <!-- repeat ×4 -->
-            </div>
-            <div class="card">
-                <h3 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem; 
-                           color: var(--primary);">Data Overview</h3>
-                <div style="position: relative; height: calc(100% - 2rem);">
-                    <canvas id="summaryChart"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <!-- STRATEGIC RECOMMENDATION -->
-        <div class="footer-bar">
-            💡 {{ONE_SENTENCE_STRATEGIC_RECOMMENDATION}}
-        </div>
-    </div>
-
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const ctx = document.getElementById('summaryChart');
-        if (ctx) {
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['A', 'B', 'C'],
-                    datasets: [{
-                        data: [30, 50, 20],
-                        backgroundColor: [
-                            'rgba(0, 82, 204, 0.8)',
-                            'rgba(0, 82, 204, 0.6)',
-                            'rgba(0, 82, 204, 0.4)'
-                        ],
-                        borderRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        y: { beginAtZero: true, ticks: { font: { size: 10 } } },
-                        x: { ticks: { font: { size: 10 } } }
-                    }
-                }
-            });
-        }
-    });
-    </script>
-</body>
-</html>
-```
-
-## Final Verification Checklist
-
-Before delivering the summary, verify:
-
-1. **No scrollbars** — Open the HTML and confirm no scroll appears on a standard 
-   1920×1080 viewport
-2. **No overflow** — No text is clipped, hidden, or bleeding outside card boundaries
-3. **No empty space** — Every component contains real content from the source
-4. **No long text** — Every label, description, and bullet is aggressively concise
-5. **Chart renders** — The Chart.js visualization loads and displays properly
-6. **Theme applied** — All colors match the selected design theme
-7. **Components don't overlap** — Each grid cell stays within its bounds
-
-## Responsive Considerations
-
-The one-page summary is primarily designed for desktop/laptop screens. On mobile:
-- Stack the KPI cards 2×2 instead of 4×1
-- Stack the content area vertically
-- Allow scrolling on mobile only (keep `overflow: hidden` for desktop via media query)
+The McKinsey quarterly palette. Deep navy primary with muted gold accent. Use for:
+corporate strategy, finance, markets, general business, policy, economics, white papers.
 
 ```css
-@media (max-width: 768px) {
-    html, body { overflow: auto; height: auto; }
-    .summary-grid { height: auto; }
-    .kpi-row { grid-template-columns: repeat(2, 1fr); }
-    .content-area { grid-template-columns: 1fr; }
+:root {
+    --primary:    #051c2c;  /* Deep navy — headlines, primary surfaces */
+    --primary-2:  #1a3a54;  /* Chart mid tint */
+    --primary-3:  #315676;  /* Chart light tint */
+    --primary-4:  #507995;  /* Chart lighter tint */
+    --accent:     #c4a35a;  /* Muted antique gold — eyebrow labels, highlights */
+    --bg:         #ffffff;
+    --bg-alt:     #f5f6f8;  /* Subtle panel background */
+    --border:     #d9dce1;  /* Hairline dividers */
+    --text:       #1a1a2e;  /* Body text */
+    --text-mid:   #3d4456;  /* Secondary text */
+    --text-light: #6b7280;  /* Tertiary text, meta */
 }
 ```
+
+**Chart gradient** (5 tints, darkest → lightest):
+`#051c2c`, `#1a3a54`, `#315676`, `#507995`, `#7099b4`
+
+---
+
+## Palette 2 — Boston Charcoal
+
+The BCG Henderson Institute palette. Deep charcoal primary with a restrained forest
+green accent. Reads as "analytical rigor with a technology edge." Use for: technology,
+software, AI, engineering, data platforms, R&D, industrial.
+
+```css
+:root {
+    --primary:    #1a1f2e;  /* Charcoal with cool tint */
+    --primary-2:  #2f3a4d;
+    --primary-3:  #485670;
+    --primary-4:  #647490;
+    --accent:     #2d6a4f;  /* Muted forest green — BCG signature */
+    --bg:         #ffffff;
+    --bg-alt:     #f4f5f7;
+    --border:     #dcdfe4;
+    --text:       #15192a;
+    --text-mid:   #384053;
+    --text-light: #6a7288;
+}
+```
+
+**Chart gradient**: `#1a1f2e`, `#2f3a4d`, `#485670`, `#647490`, `#8296b0`
+
+---
+
+## Palette 3 — Bain Crimson
+
+The Bain red palette, modernized. Deep crimson primary with a charcoal counterweight.
+Still muted — no alarm red, no safety orange. Reads as "serious, high-stakes, consequential."
+Use for: crisis analysis, risk, conflict, regulatory action, litigation, loss events.
+
+```css
+:root {
+    --primary:    #6b1220;  /* Deep oxblood crimson */
+    --primary-2:  #852033;
+    --primary-3:  #a03546;
+    --primary-4:  #b85566;
+    --accent:     #1f2430;  /* Near-black charcoal — counterweight */
+    --bg:         #ffffff;
+    --bg-alt:     #f6f3f3;
+    --border:     #e0d9da;
+    --text:       #1f1618;
+    --text-mid:   #453339;
+    --text-light: #726069;
+}
+```
+
+**Chart gradient**: `#6b1220`, `#852033`, `#a03546`, `#b85566`, `#d07a88`
+
+**Important**: Even though this is the "crisis" palette, the overall page should still
+feel composed — not alarmed. Use this palette's intensity sparingly. Let whitespace do
+the work of conveying gravity.
+
+---
+
+## Palette 4 — Deloitte Forest
+
+A deep forest green primary with a warm beige accent. Earthy, credible, institutional.
+Reads as "long-term stewardship." Use for: environment, sustainability, ESG, healthcare,
+education, public sector, social impact.
+
+```css
+:root {
+    --primary:    #1b4332;  /* Deep forest */
+    --primary-2:  #2d5a44;
+    --primary-3:  #417156;
+    --primary-4:  #5b8a70;
+    --accent:     #a68a64;  /* Warm earthy beige */
+    --bg:         #ffffff;
+    --bg-alt:     #f4f6f3;
+    --border:     #d8ddd5;
+    --text:       #161f1a;
+    --text-mid:   #384338;
+    --text-light: #6a7268;
+}
+```
+
+**Chart gradient**: `#1b4332`, `#2d5a44`, `#417156`, `#5b8a70`, `#79a48c`
+
+---
+
+## Palette 5 — Editorial Slate
+
+The Financial Times / Economist long-form palette. Warm off-white background with a
+slate primary and restrained terracotta accent. Reads as "considered journalism." Use for:
+media analysis, editorial commentary, social research, cultural criticism, long-form
+infographics.
+
+```css
+:root {
+    --primary:    #2c3e50;  /* Slate */
+    --primary-2:  #3e5266;
+    --primary-3:  #56697c;
+    --primary-4:  #738596;
+    --accent:     #b85c3b;  /* Muted terracotta — FT pink spirit, darker */
+    --bg:         #fcf9f2;  /* Warm off-white — editorial paper */
+    --bg-alt:     #f4efe4;
+    --border:     #e0d9c9;
+    --text:       #1d242c;
+    --text-mid:   #3a4654;
+    --text-light: #6b7583;
+}
+```
+
+**Chart gradient**: `#2c3e50`, `#3e5266`, `#56697c`, `#738596`, `#90a0b0`
+
+**Note**: This is the only palette with an off-white background. Everything else uses
+pure white. This reinforces the "newspaper" feel.
+
+---
+
+## Universal CSS Classes (paste into every output)
+
+These classes work identically across all 5 palettes. Always include them in the
+`<style>` block after the palette CSS variables:
+
+```css
+body {
+    font-family: "Paperlogy", -apple-system, BlinkMacSystemFont, "Segoe UI",
+                 Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Layout 1 sidebar links */
+.sidebar-link {
+    transition: all 0.15s;
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.6);
+    border-left: 3px solid transparent;
+    letter-spacing: 0.01em;
+}
+.sidebar-link:hover { color: #fff; background: rgba(255,255,255,0.06); }
+.sidebar-link.active {
+    color: #fff;
+    font-weight: 700;
+    background: rgba(255,255,255,0.08);
+    border-left-color: var(--accent);
+}
+
+/* Section titles */
+.content-section { scroll-margin-top: 4.5rem; }
+.s-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding-bottom: 0.6rem;
+    margin-bottom: 1.25rem;
+    border-bottom: 3px solid var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.s-title .num {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #fff;
+    background: var(--primary);
+    border-radius: 2px;
+    width: 24px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* Insight boxes */
+.insight-box {
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--primary);
+    padding: 1.25rem;
+    background: #fff;
+}
+.insight-box.mid-top    { border-top-color: var(--primary-3); }
+.insight-box.accent-top { border-top-color: var(--accent); }
+
+/* Stat cards */
+.stat-card {
+    text-align: center;
+    padding: 1.25rem 1rem;
+    border: 1px solid var(--border);
+    background: var(--bg-alt);
+}
+.stat-val {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1;
+}
+.stat-label {
+    font-size: 0.72rem;
+    color: var(--text-light);
+    margin-top: 0.4rem;
+    line-height: 1.3;
+}
+
+/* Pull quotes */
+.pull-quote {
+    border-left: 4px solid var(--primary);
+    padding: 1rem 1.5rem;
+    background: var(--bg-alt);
+    font-style: italic;
+    font-size: 0.88rem;
+    color: var(--text-mid);
+    line-height: 1.7;
+    margin: 1rem 0;
+}
+
+/* Featured banner (Layout 1 — at most once per report) */
+.featured-banner {
+    background: var(--primary);
+    color: #fff;
+    padding: 1.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+}
+.featured-banner::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 120px;
+    height: 100%;
+    background: var(--accent);
+    opacity: 0.12;
+    transform: skewX(-12deg) translateX(40px);
+}
+
+/* Misc */
+.sub-text { font-size: 0.82rem; line-height: 1.7; color: var(--text-mid); }
+.sub-text strong { color: var(--text); }
+.divider { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+.chart-container { position: relative; height: 270px; }
+.step-num {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    font-size: 0.65rem;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary);
+    color: #fff;
+    flex-shrink: 0;
+}
+.pill {
+    display: inline-block;
+    padding: 0.15rem 0.55rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--bg-alt);
+    color: var(--text-light);
+    border: 1px solid var(--border);
+}
+.pill-primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+```
+
+## Chart.js Base Configuration
+
+Use this base config for all charts in all palettes. Replace `#051c2c` etc. with the
+palette's own chart gradient:
+
+```javascript
+const consultingChartDefaults = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+        legend: {
+            position: 'bottom',
+            labels: {
+                font: { family: 'Paperlogy', size: 11, weight: '600' },
+                color: '#3d4456',
+                boxWidth: 12,
+                boxHeight: 12,
+                padding: 14
+            }
+        },
+        tooltip: {
+            backgroundColor: '#051c2c',  /* use palette --primary */
+            titleFont: { family: 'Paperlogy', size: 12, weight: '700' },
+            bodyFont: { family: 'Paperlogy', size: 11 },
+            padding: 10,
+            cornerRadius: 2,
+            displayColors: false
+        }
+    },
+    scales: {
+        x: {
+            grid: { display: false },
+            ticks: {
+                font: { family: 'Paperlogy', size: 10, weight: '600' },
+                color: '#6b7280'
+            }
+        },
+        y: {
+            grid: { color: 'rgba(0,0,0,0.04)', drawBorder: false },
+            ticks: {
+                font: { family: 'Paperlogy', size: 10 },
+                color: '#6b7280'
+            }
+        }
+    }
+};
+```
+
+## Do / Don't Reference
+
+| Do | Don't |
+|---|---|
+| Hairline borders (`1px solid var(--border)`) | Box shadows |
+| `border-radius: 2px` or none | `rounded-xl`, `rounded-full` |
+| Uppercase tracking-widest eyebrow labels | ALL CAPS headings |
+| Inline SVG line icons (`stroke-width: 2`) | Emoji icons |
+| Charts: `--primary` monochromatic, or `--primary` + `--accent` for 2-series | Multi-color palette charts with bright blues / reds |
+| Muted oxblood `#6b1220` for "bad" categories | Alarm red `#dc2626`, `#c00`, etc. |
+| `font-weight: 800` on headlines | `font-weight: 900` (too heavy) |
+| Narrow content width (`max-w-4xl` / `max-w-5xl`) | Edge-to-edge layouts |
+| Whitespace as a design element | Decorative backgrounds |
+| One `featured-banner` per report, maximum | Multiple dark banners |
+| `--accent` for eyebrows and highlights only | `--accent` in chart fills |

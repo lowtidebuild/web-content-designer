@@ -1,247 +1,175 @@
-# Infographic Structure Reference (Layout 2)
+---
+name: web-content-designer
+description: Use when the user asks to turn text, articles, reports, or URLs into a polished single-file HTML page, dashboard, infographic, briefing, executive summary, or visual report. Triggers include "make this a dashboard", "visualize this article", "create an HTML report", "turn this into an infographic", "대시보드로 만들어줘", "인포그래픽으로", "요약 보고서", "시각화해줘".
+---
 
-The Visual Infographic is a **long-scroll narrative report** with rich visual storytelling. 
-It reads like a premium editorial piece — flowing from top to bottom with embedded charts, 
-data callouts, expert quotes, timelines, and comparison tables.
+# Web Content Designer
 
-## Page Architecture
+Transforms raw text, articles, or URLs into **production-quality single-file HTML pages**
+in a consulting-deck visual style (McKinsey / BCG / Bain pitch tone). Every output is a
+standalone `.html` file — no build tools, no external assets beyond three CDN links
+(Tailwind, Chart.js, Paperlogy font).
 
-```
-┌──────────────────────────────────────────────┐
-│  Fixed Top Nav (horizontal, scrollspy)       │
-├──────────────────────────────────────────────┤
-│                                              │
-│  Hero Section (full-width title + subtitle)  │
-│                                              │
-├──────────────────────────────────────────────┤
-│  Section Bridge (transition text)            │
-├──────────────────────────────────────────────┤
-│  KPI Cards Row                               │
-│  [KPI] [KPI] [KPI] [KPI]                    │
-├──────────────────────────────────────────────┤
-│  Section Bridge                              │
-├──────────────────────────────────────────────┤
-│  Content Block: Prose + Chart Side-by-Side   │
-│  ┌────────────────┐ ┌────────────────────┐   │
-│  │ Analysis text   │ │ Chart.js visual    │   │
-│  └────────────────┘ └────────────────────┘   │
-├──────────────────────────────────────────────┤
-│  Timeline / Process Flow                     │
-├──────────────────────────────────────────────┤
-│  Expert Quotes / Insight Boxes               │
-├──────────────────────────────────────────────┤
-│  Comparison Table                            │
-├──────────────────────────────────────────────┤
-│  Strategy Cards Grid                         │
-├──────────────────────────────────────────────┤
-│  Scenario Analysis                           │
-├──────────────────────────────────────────────┤
-│  Final Recommendations / CTA                 │
-└──────────────────────────────────────────────┘
-```
+## Core Design Philosophy
 
-## Two Navigation Variants
+**This skill produces restrained, typographic, consulting-grade layouts — never alarming,
+alarming, alarming, playful, or decorative ones.** Regardless of the source topic, the output
+must read like a Big Four briefing document. If the result looks like a marketing landing
+page, a startup pitch, or a news portal — it is wrong.
 
-### Variant A: Fixed Sidebar (like the Dashboard but with infographic content flow)
+The complete visual rules live in `design-themes.md`. The three layout blueprints live in
+`dashboard-structure.md`, `infographic-structure.md`, and `one-page-structure.md`.
 
-Uses the same sidebar structure as Layout 1, but the main content area flows as a 
-continuous narrative rather than discrete dashboard panels. Best for **8+ sections** 
-with dense analytical content.
+## Workflow
 
-### Variant B: Fixed Top Navigation Bar
+1. **Receive trigger.** The user pastes text, a URL, or asks to visualize content.
+2. **Pick a layout** (see "Layout Selection" below).
+3. **Pick a palette** (see `design-themes.md` — default: Consulting Navy).
+4. **Read the matching structure doc** for that layout:
+   - Layout 1 → `dashboard-structure.md`
+   - Layout 2 → `infographic-structure.md`
+   - Layout 3 → `one-page-structure.md`
+5. **Read `design-themes.md`** to copy the palette variables and universal CSS classes.
+6. **Generate the single-file HTML**, honoring the Visual Discipline Rules (below).
+7. **Deliver** the raw HTML as a single code block. Do not wrap it in explanatory prose.
+   A one-line summary of what you made is fine.
 
-A horizontal nav bar fixed at the top. Better for **5-7 sections** with a more 
-editorial, story-driven flow.
+## Layout Selection
 
-```html
-<nav class="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-sm z-50 border-b shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
-        <h1 class="text-lg font-bold text-primary truncate">Report Title</h1>
-        <div class="hidden md:flex space-x-1" id="main-nav">
-            <a href="#s1" class="nav-link px-3 py-1.5 rounded-lg text-sm font-medium">Section 1</a>
-            <a href="#s2" class="nav-link px-3 py-1.5 rounded-lg text-sm font-medium">Section 2</a>
-            <!-- ... -->
-        </div>
-        <button id="mobile-menu-button" class="md:hidden p-2"><!-- hamburger --></button>
-    </div>
-</nav>
-<main class="pt-20 px-4 sm:px-8 lg:px-12 pb-24 max-w-5xl mx-auto">
-    <!-- content flows here -->
-</main>
-```
+Pick exactly one layout based on content characteristics:
 
-**Choose the variant** based on content density: sidebar for comprehensive reports 
-(the Iran-US war analysis, court ruling analysis type), top nav for more focused pieces.
+| Layout | Use when... |
+|---|---|
+| **1 — Interactive Dashboard** | Source has 5-8 distinct analytical sections, dense data, multiple KPIs, mixed charts/tables. The reader benefits from a persistent sidebar to jump between sections. Think: strategic report, market analysis, multi-source research synthesis. |
+| **2 — Visual Infographic** | Source is narrative-driven, chronological, or argumentative. Benefits from long-scroll storytelling with embedded timelines, quotes, comparison tables. Think: editorial long-form, crisis analysis, historical reconstruction. |
+| **3 — One-Page Summary** | User asks for a "briefing", "executive summary", "TL;DR", "one-pager", or source is short enough to condense to 4 KPIs + 4 key points + 1 chart. Must fit in a single viewport without scrolling. |
 
-## Key Visual Components
+**If ambiguous, default to Layout 1 (Dashboard).**
 
-### 1. Hero Section
+**Explicit trigger phrases:**
+- Dashboard: "dashboard", "대시보드", "interactive report", "sectioned report"
+- Infographic: "infographic", "인포그래픽", "visual essay", "long-form", "story"
+- One-page: "executive summary", "briefing", "one-pager", "TL;DR", "요약 보고서", "한 페이지"
 
-A bold opening that sets the stage:
+## Visual Discipline Rules (NON-NEGOTIABLE)
 
-```html
-<section id="overview" class="content-section mb-16">
-    <div class="inline-block px-3 py-1 bg-primary/10 text-primary font-bold text-sm 
-                rounded-full mb-4">SECTION 1 — OVERVIEW</div>
-    <h2 class="text-4xl md:text-5xl font-black mb-6 tracking-tight">
-        Bold Headline That<br>Captures Attention
-    </h2>
-    <p class="text-lg md:text-xl leading-relaxed text-gray-700 mb-6 max-w-4xl">
-        Opening paragraph that summarizes the situation...
-    </p>
-</section>
-```
+These rules apply to **every** output regardless of layout or palette. Violating any of
+these produces a non-consulting result and is a failure of this skill.
 
-### 2. Section Bridges
+1. **CSS variables only.** Never use Tailwind color classes (`bg-blue-500`, `text-red-600`,
+   `border-green-400`, etc.). All colors come from the palette defined in
+   `design-themes.md` via `style="color:var(--primary)"` or custom classes.
 
-Transitional elements between major sections that guide the reader:
+2. **Flat, not rounded.** Border-radius ≤ `0.125rem` / `rounded-sm` on all containers.
+   Cards, buttons, panels — all squared-off. The only exception is 20-24px circular
+   badges for section numbers.
 
-```html
-<div class="section-bridge bg-gray-50 border-l-3 border-primary p-4 rounded-r-lg mb-8">
-    <p class="text-sm font-medium text-gray-700">
-        <strong>Why does this matter?</strong> The following section examines...
-    </p>
-</div>
-```
+3. **Hairline borders over shadows.** Prefer `1px solid var(--border)` over `box-shadow`.
+   Where shadow is needed, maximum is `0 1px 2px rgba(0,0,0,0.04)`. Never `shadow-lg`.
 
-### 3. KPI Cards with Hover Effects
+4. **No emoji as icons.** KPI icons, section markers, nav bullets must be inline SVG line
+   icons (`stroke-width="2"` typical). Emoji is only allowed inside literal quoted text
+   from the source.
 
-```html
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-    <div class="kpi-card bg-white rounded-xl p-6 border border-primary/20 shadow-sm 
-                hover:shadow-md hover:-translate-y-1 transition-all duration-300">
-        <div class="text-3xl mb-2">⚡</div>
-        <div class="text-3xl font-bold text-primary">145%</div>
-        <div class="text-sm text-gray-600 mt-2">Year-over-year growth</div>
-    </div>
-</div>
-```
+5. **Restrained chart colors.** For single-series charts (one bar column, one line),
+   use `--primary` or its gradient tints only. For two-series comparisons (e.g., "expected
+   vs actual"), use `--primary` + `--accent` — this is the McKinsey-standard pairing. For
+   multi-category comparisons (3+ series), use the 5-step monochromatic gradient defined
+   per palette in `design-themes.md`. When one category needs to signal "bad / warning /
+   downside", use muted oxblood (`#6b1220`) instead of alarm red. Never introduce bright
+   colors, saturated blues, or off-palette hues into chart fills.
 
-### 4. Timeline Component
+6. **Eyebrow labels before headings.** Every section, card, and KPI block starts with a
+   small uppercase tracking-widest text label (`text-xs font-bold uppercase tracking-widest`).
+   This is the signature consulting-deck rhythm. No heading without an eyebrow.
 
-For chronological events or process flows:
+7. **Accent color is rare.** The palette's `--accent` is used only for: (a) eyebrow labels
+   in featured areas, (b) the `border-left` of active sidebar links, (c) small highlight
+   text in dark banners. Never for primary UI elements or chart fills.
 
-```html
-<div class="timeline-container relative pl-8">
-    <!-- Vertical line -->
-    <div class="absolute left-2 top-0 bottom-0 w-0.5 bg-primary/30"></div>
-    
-    <div class="timeline-item relative mb-8">
-        <!-- Dot -->
-        <div class="absolute -left-6 top-1 w-4 h-4 rounded-full bg-primary 
-                     border-3 border-white shadow"></div>
-        <div class="bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
-            <div class="text-xs font-bold text-primary mb-1">February 28, 2026</div>
-            <h4 class="font-bold text-gray-900 mb-1">Event Title</h4>
-            <p class="text-sm text-gray-600">Event description...</p>
-        </div>
-    </div>
-    <!-- ... more timeline items -->
-</div>
-```
+8. **Whitespace over decoration.** If the design feels empty, add whitespace — never color,
+   never a gradient, never an emoji, never a pastel background block.
 
-### 5. Expert Quote / Insight Box
+9. **One featured banner per report, maximum.** The dark `.featured-banner` block is
+   powerful precisely because it's rare. Never use more than one per page.
+
+10. **Font: Paperlogy throughout.** Weights: 800 for headlines, 700 for labels/eyebrows,
+    600 for strong body, 400 for prose. Never 900.
+
+## Anti-Patterns (AUTOMATIC REJECTION)
+
+If your draft includes any of these, scrap it and start over:
+
+- Tailwind color utility classes like `bg-blue-500`, `text-red-600`, `border-green-400`
+- `rounded-xl`, `rounded-2xl`, `rounded-full` on cards or buttons
+- `shadow-md`, `shadow-lg`, `shadow-xl`, or any `drop-shadow`
+- Emoji (📊, ⚡, 💡, 🎯, 🔥, ⚠️, etc.) in KPI cards, nav items, or section headers
+- Multi-color chart palettes (red + blue + green in one chart)
+- Gradient backgrounds other than the `.featured-banner::after` subtle accent
+- Alarm red (`#dc2626`, `#ef4444`, `#ff4d4f`) — use Bain Crimson's oxblood instead
+- Pastel backgrounds (`bg-pink-50`, `bg-yellow-100`, `bg-purple-50`)
+- Headings without an eyebrow label above them
+- `font-weight: 900`
+
+## Palette Selection Quick Reference
+
+Default to **Consulting Navy** unless one of these conditions clearly applies:
+
+| Content topic | Palette |
+|---|---|
+| Corporate strategy, finance, policy, markets, economics, general business | **Consulting Navy** ← default |
+| Technology, software, AI, engineering, data, R&D | **Boston Charcoal** |
+| Crisis, conflict, litigation, risk, regulatory action, loss events | **Bain Crimson** |
+| Environment, sustainability, ESG, healthcare, public sector, education | **Deloitte Forest** |
+| Journalism, media, cultural analysis, editorial long-form | **Editorial Slate** |
+
+Full palette definitions with CSS variables and chart gradients: `design-themes.md`.
+
+## Technical Stack
+
+Every generated HTML file is self-contained and uses exactly these three CDN dependencies:
 
 ```html
-<div class="expert-quote border-l-4 border-primary bg-gradient-to-r from-primary/5 
-            to-transparent p-5 rounded-r-lg my-6">
-    <p class="text-gray-700 italic leading-relaxed">
-        "Quoted analysis or key insight from the source..."
-    </p>
-    <p class="text-sm font-bold text-primary mt-2">— Source Attribution</p>
-</div>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/fonts-archive/Paperlogy/subsets/Paperlogy-dynamic-subset.css"
+      type="text/css"/>
 ```
 
-### 6. Side-by-Side Analysis (Prose + Chart)
+Plus inline `<style>` (palette + universal classes from `design-themes.md`) and inline
+`<script>` (scroll-spy, mobile menu, Chart.js initialization). No other dependencies.
 
-```html
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
-    <div class="prose max-w-none text-gray-700 leading-relaxed">
-        <p>Analysis text that explains the data shown in the chart...</p>
-    </div>
-    <div class="bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
-        <h4 class="font-bold mb-4 text-center">Chart Title</h4>
-        <div class="relative h-72">
-            <canvas id="chartId"></canvas>
-        </div>
-    </div>
-</div>
-```
+## Delivery Format
 
-### 7. Comparison / Data Table
+Deliver the output as a **single HTML code block**. Do not split it, do not explain the
+CSS, do not add preamble. A one-sentence lead-in describing which layout and palette
+you picked is fine — but the meat of the response is the raw HTML.
 
-```html
-<div class="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
-    <table class="w-full text-sm">
-        <thead>
-            <tr class="bg-gray-900 text-white">
-                <th class="px-4 py-3 text-left font-bold uppercase tracking-wider text-xs">Column A</th>
-                <th class="px-4 py-3 text-left font-bold uppercase tracking-wider text-xs">Column B</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="hover:bg-primary/5 transition-colors">
-                <td class="px-4 py-3 border-b border-gray-100">Data</td>
-                <td class="px-4 py-3 border-b border-gray-100">Data</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-```
+Example delivery:
 
-### 8. Strategy / Scenario Cards
+> I used Layout 2 (Visual Infographic) with the Editorial Slate palette since this is a
+> long-form media analysis piece.
+>
+> ```html
+> <!DOCTYPE html>
+> ...
+> ```
 
-```html
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-    <div class="strategy-card bg-white border border-gray-200 rounded-xl p-6 
-                hover:border-primary/50 hover:shadow-lg transition-all duration-300">
-        <div class="text-2xl mb-3">🎯</div>
-        <h4 class="font-bold text-lg mb-2">Strategy Title</h4>
-        <p class="text-sm text-gray-600 leading-relaxed">Description...</p>
-    </div>
-</div>
-```
+## Reference Outputs
 
-### 9. Risk Meter / Progress Bars
+Three example files demonstrate the expected quality bar. Open them to see how palette,
+layout, and discipline rules combine in practice:
 
-```html
-<div class="space-y-4">
-    <div>
-        <div class="flex justify-between text-sm mb-1">
-            <span class="font-medium">Risk Factor A</span>
-            <span class="text-primary font-bold">85%</span>
-        </div>
-        <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
-            <div class="h-full bg-primary rounded-full" style="width: 85%"></div>
-        </div>
-    </div>
-</div>
-```
+- `dashboard-example.html` — Layout 1 in Consulting Navy
+- `infographic-example.html` — Layout 2 in Editorial Slate
+- `one-page-example.html` — Layout 3 in Consulting Navy
 
-## Narrative Flow Guidelines
+When in doubt about visual tone, open these and match them.
 
-The infographic layout is fundamentally about **storytelling**. Each section should 
-connect to the next with intentional transitions:
+## Compatibility
 
-1. **Open with the "what"** — What happened? What's the situation?
-2. **Explain the "why"** — Root causes, background, contributing factors
-3. **Show the "how"** — Mechanisms, processes, timelines
-4. **Present the evidence** — Data, expert analysis, comparisons
-5. **Assess the impact** — Who is affected? How severely?
-6. **Close with the "so what"** — Recommendations, scenarios, calls to action
-
-Use **section bridges** between major parts to maintain narrative momentum. 
-The reader should feel like they're being guided through a story, not browsing 
-disconnected panels.
-
-## Section Numbering
-
-Use numbered section labels for navigation clarity:
-
-```html
-<span class="section-number inline-flex items-center justify-center w-7 h-7 
-             bg-primary text-white rounded-full text-xs font-bold mr-2">1</span>
-```
-
-This helps readers orient themselves in long-scroll content and provides visual 
-anchoring in the navigation sidebar/bar.
+- **Claude models:** Opus 4+, Sonnet 4+, Haiku 4.5+
+- **Platforms:** Claude.ai, Claude Code, any environment with skill support
+- **Language:** Auto-detect from source (Korean / English supported)
+- **Browsers:** All modern browsers (Chrome, Firefox, Safari, Edge)
