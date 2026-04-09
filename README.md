@@ -3,7 +3,7 @@
 A Claude skill that transforms raw text, articles, or URLs into polished, production-grade single-file HTML pages — complete with interactive navigation, Chart.js data visualizations, responsive layouts, and auto-selected design themes.
 
 ![Claude Skill](https://img.shields.io/badge/Claude-Skill-blueviolet?style=flat-square)
-![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)
+![License](https://img.shields.io/badge/license-Apache_2.0-blue?style=flat-square)
 ![Layouts](https://img.shields.io/badge/layouts-3-blue?style=flat-square)
 ![Themes](https://img.shields.io/badge/themes-10-orange?style=flat-square)
 
@@ -160,4 +160,4 @@ Contributions are welcome. Some areas that would be especially valuable:
 
 ## License
 
-MIT
+Licensed under the [Apache License, Version 2.0](LICENSE).
